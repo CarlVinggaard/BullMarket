@@ -10,4 +10,4 @@ mongo = PyMongo(app)
 
 @app.route('/')
 def front_page():
-  return render_template('index.html')
+  return render_template('base.html')
