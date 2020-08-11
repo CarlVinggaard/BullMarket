@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% set active = "trade" %}
+{% block content  %}
+<div id="current-cash" class="flex justify-center">
+  <div>
+    <div>
+      <h5 class="uppercase">Buy or sell stocks to increase the value of your portfolio!</h5>
+    </div>
+    <div class="flex items-end mt-4">
+      <div class="text-4xl uppercase font-light">Cash available</div>
+      <div class="text-4xl font-bold ml-8">€910,00</div>
+    </div>
+    <div id="stock-table" class="mt-12">
+      <table class="uppercase table-fixed">
+        <tr>
+          <th class="text-left w-48">Stock</th>
+          <th class="text-right w-48">Growth today</th>
+          <th class="text-right w-48">Price/Stock</th>
+          <th class="w-24"></th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
