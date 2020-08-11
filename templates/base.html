@@ -25,12 +25,15 @@
       </button>
     </div>
     <div class="md:flex md:items-center md:w-auto">
-    <ul class='flex items-center'>
-      <li class="mr-16 uppercase"><a>Portfolio</a></li>
-      <li class="mr-16 uppercase"><a>History</a></li>
-      <li class="mr-16 px-6 py-2 uppercase bg-orange-500 text-white rounded"><a>Trade</a></li>
-    </ul>
-</div>
+      <ul class='flex items-center'>
+        <li class="mr-16 uppercase"><a href="/">Portfolio</a></li>
+        <li class="mr-16 uppercase"><a href="/history">History</a></li>
+        <li class="mr-16 uppercase"><a href="trade" class="px-6 py-2 bg-orange-500 text-white rounded">Trade</a></li>
+      </ul>
+    </div>
   </nav>
+  <div id='content'>
+    {% block content %}{% endblock %}
+  </div>
 </body>
 </html>
