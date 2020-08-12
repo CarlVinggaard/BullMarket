@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% set active = "trade" %}
-{% block content  %}
+{% block content %}
 <div id="current-cash" class="flex justify-center">
   <div>
     <div>
@@ -18,6 +18,14 @@
           <th class="text-right w-48">Price/Stock</th>
           <th class="w-24"></th>
         </tr>
+        {% for stock in stocks %}
+          <tr>
+            <td class="text-left">{{stock.stockCode}}</td>
+            <td class="text-right"></td>
+            <td class="text-right"></td>
+            <td class=""><button>Buy</button><button>Sell</button></td>
+          </tr>
+        {% endfor %}
       </table>
     </div>
   </div>

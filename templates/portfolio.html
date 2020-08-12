@@ -7,12 +7,16 @@
         <h5 class="uppercase">Current portfolio value</h5>
 
         <div class="mt-2">
-          <span class="text-green-600 text-6xl font-bold">€ 30.968,25</span>
+          <span class="text-green-600 text-6xl font-bold">€ {{ user.cash }}</span>
         </div>
 
         <div class="mt-4">
-          <h5>Up <span class="text-green-600 font-bold">€ 4.002,50</span> since last trade!</h5>
-          <h5 class="mt-4 ">You are currently up/down € 10.968,25</h5>
+          <div class="h-10">
+            {% if user.cash and user.valueAtLastTrade %}
+              <h5>Changed <span class="text-green-600 font-bold">€ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
+            {% endif %}
+          </div>
+          <h5 class="mt-4 ">You have currently made € {{ user.cash - 20000 }}</h5>
         </div>
       </section>
 
@@ -24,13 +28,29 @@
             <th class="text-right w-48">Price/Stock</th>
             <th class="text-right w-48">Total value</th>
           </tr>
-          <tr>
-            <td class="normal-case font-bold text-left">Available cash</td>
-            <td></td>
-            <td></td>
-            <td class="font-bold text-right">*X*</td>
-          </tr>
-        </table>
+          {% if user.portfolio %}
+            {% for stock in user.portfolio %}
+              <tr>
+                <td class="text-left">{{ stock.stockCode }}</td>
+                <td class="text-left">{{ stock.quantity }}</td>
+                <td class="text-left">{{ stock.quantity }}</td>
+                <td class="text-left">{{ stock.quantity }}</td>
+              </tr>
+            {% endfor %}
+              <tr>
+                <td class="normal-case font-bold text-left">Available cash</td>
+                <td></td>
+                <td></td>
+                <td class="font-bold text-right">{{ user.cash }}</td>
+              </tr>
+            </table>
+          {% else %}
+            </table>
+            <div class="mt-8 flex justify-center">
+              <h5 class="text-grey-400">There are no stocks in your portfolio! Buy some to grow your portfolio value.</h5>
+            </div>
+          {% endif %}
+          
       </section>
     </div>
   </div>

@@ -11,7 +11,21 @@
           <th class="text-right w-48">Price/Stock</th>
           <th class="text-right w-48">Total value</th>
         </tr>
-      </table>
+        {% if user.trades %}
+          {% for trade in user.trades %}
+            <tr>
+              <td class="text-left">{{ trade.stockCode }}</td>
+              <td class="text-left">{{ trade.type }}</td>
+              <td class="text-right">{{ trade.quantity }}</td>
+              <td class="text-right">{{ trade.price }}</td>
+              <td class="text-right">{{ trade.price }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          </table>
+          <h5>You have not made any trades yet.</h5>
+        {% endif %}
     </div>
   </div>
 {% endblock %}
