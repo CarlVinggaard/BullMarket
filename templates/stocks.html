@@ -1,0 +1,5 @@
+{% for stock in stocks %}
+{% if stock.symbol and stock.price %}
+  <p>{{ stock.symbol }}{{ stock.price }}</p>
+{% endif %}
+{% endfor %}

@@ -1,4 +1,6 @@
 import os
+import urllib
+import asyncio
 import logging
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
@@ -9,6 +11,22 @@ app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb+srv://carlvinggaard:18M0n90d603@cluster0-lqr5z.mongodb.net/stockTradingGame?retryWrites=true&w=majority"
 app.secret_key = 'secretkey'
 mongo = PyMongo(app)
+
+currentStocks = [] 
+responses = []
+
+async def fetch(url):
+  req = urllib.request.Request(url)
+  res = urllib.request.urlopen(req)
+  return res
+
+def fetchStocks():
+  stocks = mongo.db.stocks.find()
+  for stock in stocks:
+    stockCode = stock['stockCode']
+    res = asyncio.run(fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + stockCode + '&apikey=9O8UMYIB7I41MNDM'))
+    currentStocks.append(res.read())
+  return currentStocks
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
@@ -40,3 +58,8 @@ def trade():
 def logout():
   session.pop('username', None)
   return redirect(url_for('index'))
+
+@app.route('/stocks')
+def stocks():
+  stocks = fetchStocks()
+  return render_template('stocks.html', stocks=stocks)

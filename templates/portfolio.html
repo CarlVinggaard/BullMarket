@@ -32,9 +32,9 @@
             {% for stock in user.portfolio %}
               <tr height="50px">
                 <td class="text-left">{{ stock.stockCode }}</td>
-                <td class="text-left">{{ stock.quantity }}</td>
-                <td class="text-left">{{ stock.quantity }}</td>
-                <td class="text-left">{{ stock.quantity }}</td>
+                <td class="text-right">{{ stock.quantity }}</td>
+                <td class="text-right">{{ stock.quantity }}</td>
+                <td class="text-right">{{ stock.quantity }}</td>
               </tr>
             {% endfor %}
               <tr height="80px">
