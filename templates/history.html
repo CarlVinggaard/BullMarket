@@ -1,17 +1,31 @@
 {% extends "base.html" %}
 {% set active = "history" %}
 {% block content %}
-  <div class="py-12 flex justify-center">
+  <div class="flex justify-center mt-8">
     <div class="">
       <table class="uppercase table-fixed">
-        <tr>
+        <tr height="66px">
           <th class="text-left w-48">Stock</th>
           <th class="text-left w-48">Type</th>
           <th class="text-right w-48">Quantity</th>
           <th class="text-right w-48">Price/Stock</th>
           <th class="text-right w-48">Total value</th>
         </tr>
-      </table>
+        {% if user.trades %}
+          {% for trade in user.trades %}
+            <tr height="40px">
+              <td class="text-left">{{ trade.stockCode }}</td>
+              <td class="text-left">{{ trade.type }}</td>
+              <td class="text-right">{{ trade.quantity }}</td>
+              <td class="text-right">{{ trade.price }}</td>
+              <td class="text-right">{{ trade.price }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          </table>
+          <h5>You have not made any trades yet.</h5>
+        {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -1,23 +1,36 @@
 {% extends "base.html" %}
 {% set active = "trade" %}
-{% block content  %}
-<div id="current-cash" class="flex justify-center">
+{% block content %}
+<div id="current-cash" class="flex justify-center mt-8">
   <div>
     <div>
       <h5 class="uppercase">Buy or sell stocks to increase the value of your portfolio!</h5>
     </div>
     <div class="flex items-end mt-4">
       <div class="text-4xl uppercase font-light">Cash available</div>
-      <div class="text-4xl font-bold ml-8">€910,00</div>
+      <div class="text-4xl font-bold ml-8">€ {{ user.cash }}</div>
     </div>
     <div id="stock-table" class="mt-12">
       <table class="uppercase table-fixed">
-        <tr>
+        <tr height="66px">
           <th class="text-left w-48">Stock</th>
           <th class="text-right w-48">Growth today</th>
           <th class="text-right w-48">Price/Stock</th>
           <th class="w-24"></th>
         </tr>
+        {% for stock in stocks %}
+          <tr height="50px">
+            <td class="text-left">{{stock.stockCode}}</td>
+            <td class="text-right"></td>
+            <td class="text-right"></td>
+            <td class="">
+              <div class="flex pl-6">
+                <button class="text-white uppercase font-bold w-20 bg-blue-500 py-2 rounded-lg mr-3">Buy</button>
+                <button class="text-white uppercase font-bold w-20 bg-orange-500 py-2 rounded-lg">Sell</button>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
       </table>
     </div>
   </div>
