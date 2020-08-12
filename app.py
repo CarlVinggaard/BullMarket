@@ -34,14 +34,7 @@ def history():
 
 @app.route('/trade')
 def trade():
-  return render_template('trade.html', stocks=mongo.db.stocks.find())
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-  if request.method == 'POST':
-    session['username'] = request.form['username']
-    return redirect(url_for('index'))
-  return render_template('login.html')
+  return render_template('trade.html', stocks=mongo.db.stocks.find(), user=mongo.db.users.find_one({ 'username': session['username']}))
 
 @app.route('/logout')
 def logout():
