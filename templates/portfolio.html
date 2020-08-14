@@ -7,16 +7,16 @@
         <h5 class="uppercase">Current portfolio value</h5>
 
         <div class="mt-2">
-          <span class="text-green-600 text-6xl font-bold">€ {{ user.cash }}</span>
+          <span class="text-green-600 text-6xl font-bold">$ {{ user.cash + value }}</span>
         </div>
 
         <div class="mt-4">
           <div class="h-10">
             {% if user.cash and user.valueAtLastTrade %}
-              <h5>Changed <span class="text-green-600 font-bold">€ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
+              <h5>Changed <span class="text-green-600 font-bold">$ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
             {% endif %}
           </div>
-          <h5 class="mt-4 ">You have currently made € {{ user.cash - 20000 }}</h5>
+          <h5 class="mt-4 ">You have currently made $ {{ user.cash + value - 20000 }}</h5>
         </div>
       </section>
 
@@ -33,8 +33,8 @@
               <tr height="50px">
                 <td class="text-left">{{ stock.stockCode }}</td>
                 <td class="text-right">{{ stock.quantity }}</td>
-                <td class="text-right">{{ stock.quantity }}</td>
-                <td class="text-right">{{ stock.quantity }}</td>
+                <td class="text-right">$ {{ data[stock.stockCode] }}</td>
+                <td class="text-right">$ {{ stock.quantity * data[stock.stockCode] }}</td>
               </tr>
             {% endfor %}
               <tr height="80px">
@@ -50,7 +50,7 @@
               <h5 class="text-grey-400">There are no stocks in your portfolio! Buy some to grow your portfolio value.</h5>
             </div>
           {% endif %}
-          
+
       </section>
     </div>
   </div>

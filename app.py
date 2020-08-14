@@ -1,4 +1,5 @@
 import os
+import yfinance as yf
 import urllib
 import asyncio
 import logging
@@ -12,30 +13,41 @@ app.config["MONGO_URI"] = "mongodb+srv://carlvinggaard:18M0n90d603@cluster0-lqr5
 app.secret_key = 'secretkey'
 mongo = PyMongo(app)
 
-currentStocks = [] 
-responses = []
-
-async def fetch(url):
-  req = urllib.request.Request(url)
-  res = urllib.request.urlopen(req)
-  return res
-
-def fetchStocks():
+# FUNCTIONS
+def get_stock_data():
+  stockCodeArray = []
   stocks = mongo.db.stocks.find()
+
   for stock in stocks:
-    stockCode = stock['stockCode']
-    res = asyncio.run(fetch('https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + stockCode + '&apikey=9O8UMYIB7I41MNDM'))
-    currentStocks.append(res.read())
-  return currentStocks
+    stockCodeArray.append(stock['stockCode'])
+  
+  # Get data from API
+  data = yf.download(stockCodeArray, period="1d")
+
+  get_stock_tuple = lambda code: (code, round(data[("Close", code)][0], 2))
+
+  stockPriceDict = dict(map(get_stock_tuple, stockCodeArray))
+
+  return stockPriceDict
+
+def get_total_value(username):
+  user = mongo.db.users.find_one({ 'username': username })
+  data = get_stock_data()
+
+  get_stock_value = lambda stock: stock['quantity'] * data[stock['stockCode']]
+
+  return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
   return 
 
+
+# ROUTES
 @app.route('/', methods=['POST', 'GET'])
 def index():
   if 'username' in session:
-    return render_template('portfolio.html', user=mongo.db.users.find_one({ 'username': session['username'] }))
+    return render_template('portfolio.html', data=get_stock_data(), user=mongo.db.users.find_one({ 'username': session['username'] }), value=get_total_value(session['username']))
   else:
     if request.method == 'POST':
       username = request.form['username'].lower()
@@ -48,11 +60,17 @@ def index():
 
 @app.route('/history')
 def history():
-  return render_template('history.html', user=mongo.db.users.find_one({ 'username': session['username'] }))
+  if 'username' in session:
+    return render_template('history.html', user=mongo.db.users.find_one({ 'username': session['username'] }))
+  else:
+    return redirect(url_for('index'))
 
 @app.route('/trade')
 def trade():
-  return render_template('trade.html', stocks=mongo.db.stocks.find(), user=mongo.db.users.find_one({ 'username': session['username']}))
+  if 'username' in session:
+    return render_template('trade.html', data=get_stock_data(), user=mongo.db.users.find_one({ 'username': session['username']}))
+  else:
+    return redirect(url_for('index'))
 
 @app.route('/logout')
 def logout():
@@ -60,6 +78,5 @@ def logout():
   return redirect(url_for('index'))
 
 @app.route('/stocks')
-def stocks():
-  stocks = fetchStocks()
-  return render_template('stocks.html', stocks=stocks)
+def stocks_page():
+  return render_template('stocks.html', data=get_stock_data())

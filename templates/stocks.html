@@ -1,5 +1,12 @@
-{% for stock in stocks %}
-{% if stock.symbol and stock.price %}
-  <p>{{ stock.symbol }}{{ stock.price }}</p>
-{% endif %}
-{% endfor %}
+<table>
+  <tr>
+    <th>Stock</th>
+    <th>Price</th>
+  </tr>
+  {% for stock in data %}
+    <tr>
+      <td>{{ stock }}</td>
+      <td>{{ data[stock] }}</td>
+    </tr>
+  {% endfor %}
+</table>
