@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% set active = "trade" %}
+{% block content %}
+<div class="flex justify-center">
+  <form method="post">
+    <h4>Buy {{ stock }} stock</h4>
+    <label for="quantity">Quantity</label>
+    <input type="number" name="quantity" value="0" class="border-gray-600 border-2 border-solid rounded" />
+    <button type="submit"></button>
+    <p>Price: <span>{{ price }}</span></p>
+  </form>
+</div>
+{% endblock %}

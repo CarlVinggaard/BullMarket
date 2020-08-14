@@ -10,7 +10,7 @@ MONGO_URI = os.getenv('MONGO_URI')
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb+srv://carlvinggaard:18M0n90d603@cluster0-lqr5z.mongodb.net/stockTradingGame?retryWrites=true&w=majority"
-app.secret_key = 'secretkey'
+app.secret_key = "secretkey"
 mongo = PyMongo(app)
 
 # FUNCTIONS
@@ -30,6 +30,9 @@ def get_stock_data():
 
   return stockPriceDict
 
+def get_stock_price(stockCode):
+  data = yf.download(stockCode, period="d1")
+  return round(data["Close"][0], 2)
 
 def get_total_value(username):
   user = mongo.db.users.find_one({ 'username': username })
@@ -38,7 +41,7 @@ def get_total_value(username):
   get_stock_value = lambda stock: stock['quantity'] * data[stock['stockCode']]
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
-  
+
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
@@ -73,6 +76,15 @@ def trade():
     return render_template('trade.html', data=get_stock_data(), user=mongo.db.users.find_one({ 'username': session['username']}))
   else:
     return redirect(url_for('index'))
+  
+@app.route('/buy/<stockCode>', methods=['GET', 'POST'])
+def buy(stockCode):
+  price = get_stock_price(stockCode)
+  total = 0
+  if request.method == "POST":
+    quantity = request.form["quantity"]
+    total = quantity * price
+  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total)
 
 @app.route('/logout')
 def logout():
