@@ -16,7 +16,7 @@
               <h5>Changed <span class="text-green-600 font-bold">$ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
             {% endif %}
           </div>
-          <h5 class="mt-4 ">You have currently made $ {{ user.cash + value - 20000 }}</h5>
+          <h5 class="mt-4 ">You have currently made $ {{ (user.cash + value - 20000)|round(2) }}</h5>
         </div>
       </section>
 
@@ -34,8 +34,8 @@
               <tr height="50px">
                 <td class="text-left px-4">{{ stock.stockCode }}</td>
                 <td class="text-right px-4">{{ stock.quantity }}</td>
-                <td class="text-right px-4">$ {{ data[stock.stockCode] }}</td>
-                <td class="text-right px-4">$ {{ stock.quantity * data[stock.stockCode] }}</td>
+                <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
+                <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
                 <td><button class="text-white uppercase font-bold w-20 bg-blue-500 py-2 rounded-lg">Sell</button></td>
               </tr>
             {% endfor %}
@@ -43,7 +43,7 @@
                 <td class="normal-case font-bold text-left">Available cash</td>
                 <td></td>
                 <td></td>
-                <td class="font-bold text-right">{{ user.cash }}</td>
+                <td class="font-bold text-right">{{ user.cash|round(2) }}</td>
               </tr>
             </table>
           {% else %}

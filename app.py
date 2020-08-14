@@ -30,6 +30,7 @@ def get_stock_data():
 
   return stockPriceDict
 
+
 def get_total_value(username):
   user = mongo.db.users.find_one({ 'username': username })
   data = get_stock_data()
@@ -37,6 +38,7 @@ def get_total_value(username):
   get_stock_value = lambda stock: stock['quantity'] * data[stock['stockCode']]
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
+  
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })

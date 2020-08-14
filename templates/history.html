@@ -18,9 +18,9 @@
               <td class="text-left px-4">{{ trade.stockCode }}</td>
               <td class="text-left px-4">{{ trade.type }}</td>
               <td class="text-right px-4">{{ trade.timestamp }}</td>
-              <td class="text-right px-4">{{ trade.quantity }}</td>
-              <td class="text-right px-4">$ {{ trade.price }}</td>
-              <td class="text-right px-4">$ {{ trade.quantity * trade.price }}</td>
+              <td class="text-right px-4">{{ trade.quantity|round(2) }}</td>
+              <td class="text-right px-4">$ {{ trade.price|round(2) }}</td>
+              <td class="text-right px-4">$ {{ (trade.quantity * trade.price)|round(2) }}</td>
             </tr>
             {% endfor %}
           </table>
