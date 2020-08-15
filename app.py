@@ -42,6 +42,16 @@ def get_total_value(username):
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
+def buy_stock(stockCode, quantity):
+  exists = mongo.db.users.find({ 'username': session['username'], 'portfolio.stockCode': stockCode })
+  if not exists:
+    userQuery = { 'username': session['username'] }
+    addToSet = { '$addToSet': { 'portfolio': { 'stockCode': stockCode, 'quantity': 0 } } }
+    mongo.db.users.update_one(userQuery, addToSet)
+  else:
+    query = { 'username': session['username'], 'portfolio.stockCode': stockCode }
+    value = { '$inc': { 'portfolio.$.quantity': quantity } }
+    mongo.db.users.update_one(query, value)
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
@@ -81,10 +91,18 @@ def trade():
 def buy(stockCode):
   price = get_stock_price(stockCode)
   total = 0
+  formData = {}
+  code = ''
+  qty = 0
   if request.method == "POST":
-    quantity = request.form["quantity"]
+    quantity = int(request.form["quantity"])
     total = quantity * price
-  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total)
+    formData = request.form
+    if 'buy' in request.form:
+      # Check if valid purchase
+      buy_stock(stockCode, quantity)
+      return redirect(url_for('index'))
+  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total, formData=formData, qty=qty, code=code)
 
 @app.route('/logout')
 def logout():

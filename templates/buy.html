@@ -4,10 +4,23 @@
 <div class="flex justify-center">
   <form method="post">
     <h4>Buy {{ stock }} stock</h4>
-    <label for="quantity">Quantity</label>
-    <input type="number" name="quantity" value="0" class="border-gray-600 border-2 border-solid rounded" />
-    <button type="submit"></button>
-    <p>Price: <span>{{ price }}</span></p>
+    <p>Price/stock <span>$ {{ price }}</span></p>
+    <div class="flex-col flex my-4">
+      <label for="quantity">Quantity</label>
+      <input type="number" name="quantity" value="0" class="border-gray-600 border-2 border-solid rounded mb-4" />
+      <button type="submit" name="calculate" class="bg-blue-500 rounded text-white font-bold uppercase text-center px-6 py-2">Calculate price</button>
+    </div>
+    <div class="h-16">
+      {% if total != 0 %}
+      <span>$ {{ total }}</span>
+      {% endif %}
+    </div>
+    <div class="flex justify-center">
+      <button type="submit" name="buy" value=1 class="bg-orange-500 rounded text-white font-bold uppercase text-center px-6 py-2">Buy</button>
+    </div>
+    <div>{{ formData }}</div>
+    <div>qty: {{ qty }}</div>
+    <div>code: {{ code }}</div>
   </form>
 </div>
 {% endblock %}
