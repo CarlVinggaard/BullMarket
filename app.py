@@ -182,7 +182,7 @@ def stock(stockCode):
         add_comment(request.form['comment'], stockCode)
       else:
         return request.form
-    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editingId, formData=request.form)
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editingId)
   else:
     return redirect(url_for('index'))
 
