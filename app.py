@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 MONGO_URI = os.getenv('MONGO_URI')
 
@@ -18,17 +19,13 @@ mongo = PyMongo(app)
 def get_stock_data():
   stockCodeArray = []
   stocks = mongo.db.stocks.find()
-
   for stock in stocks:
     stockCodeArray.append(stock['stockCode'])
   
   # Get data from API
   data = yf.download(stockCodeArray, period="1d")
-
   get_stock_tuple = lambda code: (code, round(data[("Close", code)][0], 2))
-
   stockPriceDict = dict(map(get_stock_tuple, stockCodeArray))
-
   return stockPriceDict
 
 def get_stock_price(stockCode):
@@ -82,7 +79,15 @@ def sell_stock(stockCode, quantity, price):
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00, 'portfolio': [] })
-  return 
+
+def add_comment(content, stockCode):
+  mongo.db.comments.insert({ 'content': content, 'stockCode': stockCode, 'createdAt': datetime.now(), 'username': session['username'] })
+
+def delete_comment(id):
+  mongo.db.comments.delete_one({ '_id': ObjectId(id) })
+
+def edit_comment(id, content):
+  mongo.db.comments.update_one({ '_id': ObjectId(id) }, { '$set': { 'content': content } })
 
 
 # ROUTES
@@ -154,6 +159,30 @@ def sell(stockCode):
         else:
           error = "You don't have that much of this stock."
     return render_template('sell.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error, stockQuantity=stockQuantity)
+  else:
+    return redirect(url_for('index'))
+
+@app.route('/stocks/<stockCode>', methods=['GET', 'POST'])
+def stock(stockCode):
+  if 'username' in session:
+    user = mongo.db.users.find_one({ 'username': session['username'] })
+    price = get_stock_price(stockCode)
+    stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
+    comments = mongo.db.comments.find({ 'stockCode': stockCode }).sort('createdAt')
+    editingId = ''
+    if request.method == 'POST':
+      if 'delete' in request.form:
+        delete_comment(request.form['delete'])
+      elif 'edit' in request.form:
+        edit_comment(request.form['editing'], request.form['edit'])
+        editingId = ''
+      elif 'editing' in request.form:
+        editingId = ObjectId(request.form['editing'])
+      elif 'comment' in request.form:
+        add_comment(request.form['comment'], stockCode)
+      else:
+        return request.form
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editingId)
   else:
     return redirect(url_for('index'))
 
