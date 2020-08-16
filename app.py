@@ -10,7 +10,7 @@ from flask_pymongo import PyMongo
 MONGO_URI = os.getenv('MONGO_URI')
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://carlvinggaard:18M0n90d603@cluster0-lqr5z.mongodb.net/stockTradingGame?retryWrites=true&w=majority"
+app.config["MONGO_URI"] = MONGO_URI 
 app.secret_key = "secretkey"
 mongo = PyMongo(app)
 
@@ -164,7 +164,7 @@ def logout():
 
 
 if __name__ == '__main__':
-    app.run(host=os.environ.get('IP'),
-            port=int(os.environ.get('PORT')),
+    app.run(host=os.getenv('IP'),
+            port=int(os.getenv('PORT')),
             debug=True)
             
