@@ -4,7 +4,8 @@
 <div class="flex justify-center">
   <form method="post">
     <h4>Buy {{ stock }} stock</h4>
-    <p>Price/stock <span>$ {{ price }}</span></p>
+    <p>Price/stock <span>$ {{ price|round(2) }}</span></p>
+    <p>Cash available <span>$ {{ user.cash|round(2) }}</span></p>
     <div class="flex-col flex my-4">
       <label for="quantity">Quantity</label>
       <input type="number" name="quantity" value="{{ quantity }}" class="border-gray-600 border-2 border-solid rounded mb-4" />

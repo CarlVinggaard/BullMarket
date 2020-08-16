@@ -81,7 +81,7 @@ def sell_stock(stockCode, quantity, price):
   add_trade(stockCode, quantity, 'sell', price)
 
 def create_user(username):
-  mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
+  mongo.db.users.insert({ 'username': username, 'cash': 20000.00, 'portfolio': [] })
   return 
 
 
