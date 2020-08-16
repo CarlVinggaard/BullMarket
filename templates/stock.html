@@ -16,13 +16,21 @@
             <div><p>{{ comment.username }}</p></div>
             <div class="flex justify-between">
               <div class="">
-                <p>{{ comment.content }}</p>
-              </div>
-              <div>
-                {% if comment.username == session['username'] %}
-                  <form method='post'>
-                    <button type="submit" name="delete" value="{{ comment._id }}" class="rounded bg-red-500 text-white px-2 py-1 text-xs">Delete</button>
+                {% if editing == comment._id %}
+                  <form method="post">
+                    <input name="edit" value="{{ comment.content }}" placeholder="Write a comment.." class="flex-grow border-b mr-6 px-3 border-black" />
+                    <button type="submit" name="editing" value="{{ comment._id }}" class="text-gray-700 font-bold py-2 px-4 bg-gray-400 rounded">Update</button>
                   </form>
+                {% else %}
+                  <p>{{ comment.content }}</p>
+                </div>
+                <div>
+                  {% if comment.username == session['username'] %}
+                    <form method='post'>
+                      <button type="submit" name="editing" value="{{ comment._id }}" class="rounded bg-yellow-500 text-white px-2 py-1 text-xs">Edit</button>
+                      <button type="submit" name="delete" value="{{ comment._id }}" class="rounded bg-red-500 text-white px-2 py-1 text-xs">Delete</button>
+                    </form>
+                  {% endif %}
                 {% endif %}
               </div>
             </div>
@@ -34,8 +42,8 @@
           <input name="comment" placeholder="Write a comment.." class="flex-grow border-b mr-6 px-3 border-black" />
           <button type="submit" name="comment" class="text-gray-700 font-bold py-2 px-4 bg-gray-400 rounded">Comment</button>
         </div>
-        <div>{{ id }}</div>
       </form>
+      {{ formData }}
     </div>
   </div>
 </div>

@@ -86,6 +86,9 @@ def add_comment(content, stockCode):
 def delete_comment(id):
   mongo.db.comments.delete_one({ '_id': ObjectId(id) })
 
+def edit_comment(id, content):
+  mongo.db.comments.update_one({ '_id': ObjectId(id) }, { '$set': { 'content': content } })
+
 
 # ROUTES
 @app.route('/', methods=['POST', 'GET'])
@@ -166,13 +169,20 @@ def stock(stockCode):
     price = get_stock_price(stockCode)
     stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
     comments = mongo.db.comments.find({ 'stockCode': stockCode }).sort('createdAt')
-    id = ''
+    editingId = ''
     if request.method == 'POST':
       if 'delete' in request.form:
         delete_comment(request.form['delete'])
-      else:
+      elif 'edit' in request.form:
+        edit_comment(request.form['editing'], request.form['edit'])
+        editingId = ''
+      elif 'editing' in request.form:
+        editingId = ObjectId(request.form['editing'])
+      elif 'comment' in request.form:
         add_comment(request.form['comment'], stockCode)
-    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, id=id)
+      else:
+        return request.form
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editingId, formData=request.form)
   else:
     return redirect(url_for('index'))
 
