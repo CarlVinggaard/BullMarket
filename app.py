@@ -43,10 +43,10 @@ def get_total_value(username):
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
 def is_valid_purchase(quantity, price, cash):
-  return quantity * price < cash
+  return quantity * price <= cash
 
 def is_valid_sale(quantity, stockQuantity):
-  return stockQuantity > quantity
+  return stockQuantity >= quantity
 
 def buy_stock(stockCode, quantity, price):
   # If there is no object with this stock code in the portfolio, create one
