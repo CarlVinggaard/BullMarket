@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% set active = "stocks" %}
+{% block content %}
+<div class="flex justify-center">
+  <div style="max-width: 800px">
+    <div class="flex justify-between mb-12">
+        <div><div>Stock</div><div>{{ stock.stockCode }}</div></div>
+        <div><div>Current price</div><div>{{ price }}</div></div>
+    </div>
+    <div class="mb-24"><p>{{ stock.description }}</p></div>
+    <div id="comments">
+      <h3 class="font-bold text-xl">Comments</h3>
+      <div class="my-2">
+        {% for comment in comments %}
+          <p>{{ comment.username }}: {{ comment.content }}</p>
+        {% endfor %}
+      </div>
+      <form method="post">
+        <div class="flex">
+          <input name="comment" placeholder="Write a comment.." class="flex-grow border-b mr-6 px-3 border-black" />
+          <button type="submit" class="text-gray-700 font-bold py-2 px-4 bg-gray-400 rounded">Comment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

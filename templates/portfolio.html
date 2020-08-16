@@ -33,7 +33,7 @@
             {% for stock in user.portfolio %}
               {% if stock.quantity > 0 %}
                 <tr height="50px">
-                  <td class="text-left px-4">{{ stock.stockCode }}</td>
+                  <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
                   <td class="text-right px-4">{{ stock.quantity }}</td>
                   <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
                   <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
@@ -49,7 +49,7 @@
                 <td class="normal-case font-bold text-left">Available cash</td>
                 <td></td>
                 <td></td>
-                <td class="font-bold text-right">{{ user.cash|round(2) }}</td>
+                <td class="font-bold text-right">$ {{ user.cash|round(2) }}</td>
               </tr>
             </table>
           {% else %}

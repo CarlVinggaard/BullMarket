@@ -24,11 +24,8 @@ def get_stock_data():
   
   # Get data from API
   data = yf.download(stockCodeArray, period="1d")
-
   get_stock_tuple = lambda code: (code, round(data[("Close", code)][0], 2))
-
   stockPriceDict = dict(map(get_stock_tuple, stockCodeArray))
-
   return stockPriceDict
 
 def get_stock_price(stockCode):
@@ -82,6 +79,10 @@ def sell_stock(stockCode, quantity, price):
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00, 'portfolio': [] })
+  return
+
+def add_comment(content, stockCode):
+  mongo.db.comments.insert({ 'content': content, 'stockCode': stockCode, 'createdAt': datetime.now(), 'username': session['username'] })
   return 
 
 
@@ -154,6 +155,19 @@ def sell(stockCode):
         else:
           error = "You don't have that much of this stock."
     return render_template('sell.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error, stockQuantity=stockQuantity)
+  else:
+    return redirect(url_for('index'))
+
+@app.route('/stocks/<stockCode>', methods=['GET', 'POST'])
+def stock(stockCode):
+  if 'username' in session:
+    user = mongo.db.users.find({ 'username': session['username'] })
+    price = get_stock_price(stockCode)
+    stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
+    comments = mongo.db.comments.find({ 'stockCode': stockCode })
+    if request.method == 'POST':
+      add_comment(request.form['comment'], stockCode)
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments)
   else:
     return redirect(url_for('index'))
 

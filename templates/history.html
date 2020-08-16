@@ -15,9 +15,9 @@
         {% if user.trades %}
           {% for trade in user.trades %}
             <tr height="40px">
-              <td class="text-left px-4">{{ trade.stockCode }}</td>
+              <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
               <td class="text-left px-4">{{ trade.type }}</td>
-              <td class="text-right px-4">{{ trade.timestamp }}</td>
+              <td class="text-right px-4">{{ trade.timestamp.strftime("%b %d '%y %H:%M") }}</td>
               <td class="text-right px-4">{{ trade.quantity|round(2) }}</td>
               <td class="text-right px-4">$ {{ trade.price|round(2) }}</td>
               <td class="text-right px-4">$ {{ (trade.quantity * trade.price)|round(2) }}</td>
