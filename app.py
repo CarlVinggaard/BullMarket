@@ -42,17 +42,32 @@ def get_total_value(username):
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
+def is_valid_purchase(quantity, price, cash):
+  return quantity * price < cash
+
+def is_valid_sale(quantity, stockQuantity):
+  return stockQuantity > quantity
+
 def buy_stock(stockCode, quantity, price):
   # If there is no object with this stock code in the portfolio, create one
   mongo.db.users.update({ 'username': session['username'], 'portfolio.stockCode': { '$ne': stockCode } }, { '$push': { 'portfolio': { 'stockCode': stockCode, 'quantity': 0 } } })
  
-  # Increment it with <quantity>
+  # Increment the portfolio with <quantity>
   query = { 'username': session['username'], 'portfolio.stockCode': stockCode }
   value = { '$inc': { 'portfolio.$.quantity': quantity } }
   mongo.db.users.update_one(query, value)
 
   # Subtract the cash
   mongo.db.users.update({ 'username': session['username']}, { '$inc': { 'cash': -(quantity * price) } })
+
+def sell_stock(stockCode, quantity, price):
+  # Decrement the portfolio with <quantity>
+  query = { 'username': session['username'], 'portfolio.stockCode': stockCode }
+  value = { '$inc': { 'portfolio.$.quantity': -quantity } }
+  mongo.db.users.update_one(query, value)
+
+  # Add the cash
+  mongo.db.users.update({ 'username': session['username']}, { '$inc': { 'cash': quantity * price } })
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
@@ -90,17 +105,40 @@ def trade():
   
 @app.route('/buy/<stockCode>', methods=['GET', 'POST'])
 def buy(stockCode):
+  user = mongo.db.users.find_one({ 'username': session['username']})
   price = get_stock_price(stockCode)
   total = 0
   quantity = 0
+  error = ''
   if request.method == "POST":
     quantity = int(request.form["quantity"])
     total = quantity * price
     if 'buy' in request.form:
-      # Check if valid purchase
-      buy_stock(stockCode, quantity, price)
-      return redirect(url_for('index'))
-  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total, quantity=quantity)
+      if is_valid_purchase(quantity, price, user['cash']):
+        buy_stock(stockCode, quantity, price)
+        return redirect(url_for('index'))
+      else:
+        error = "You don't have enough money for that."
+  return render_template('buy.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error)
+
+@app.route('/sell/<stockCode>', methods=['GET', 'POST'])
+def sell(stockCode):
+  user = mongo.db.users.find_one({ 'username': session['username'] })
+  stockQuantity = [stock['quantity'] for stock in user['portfolio'] if stock['stockCode'] == stockCode][0]
+  price = get_stock_price(stockCode)
+  total = 0
+  quantity = 0
+  error = ''
+  if request.method == "POST":
+    quantity = int(request.form["quantity"])
+    total = quantity * price
+    if 'sell' in request.form:
+      if is_valid_sale(quantity, stockQuantity):
+        sell_stock(stockCode, quantity, price)
+        return redirect(url_for('index'))
+      else:
+        error = "You don't have that much of this stock."
+  return render_template('sell.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error, stockQuantity=stockQuantity)
 
 @app.route('/logout')
 def logout():

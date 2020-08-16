@@ -3,8 +3,9 @@
 {% block content %}
 <div class="flex justify-center">
   <form method="post">
-    <h4>Buy {{ stock }} stock</h4>
+    <h4>Sell {{ stock }} stock</h4>
     <p>Price/stock <span>$ {{ price }}</span></p>
+    <div>Current quantity in portfolio: {{ stockQuantity }}</div>
     <div class="flex-col flex my-4">
       <label for="quantity">Quantity</label>
       <input type="number" name="quantity" value="{{ quantity }}" class="border-gray-600 border-2 border-solid rounded mb-4" />
@@ -16,7 +17,7 @@
       {% endif %}
     </div>
     <div class="flex justify-center">
-      <button type="submit" name="buy" value=1 class="bg-orange-500 rounded text-white font-bold uppercase text-center px-6 py-2">Buy</button>
+      <button type="submit" name="sell" value=1 class="bg-orange-500 rounded text-white font-bold uppercase text-center px-6 py-2">Sell</button>
     </div>
     <div class="text-red-500 text-center">{{ error }}</div>
   </form>
