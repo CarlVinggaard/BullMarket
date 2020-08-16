@@ -161,10 +161,10 @@ def sell(stockCode):
 @app.route('/stocks/<stockCode>', methods=['GET', 'POST'])
 def stock(stockCode):
   if 'username' in session:
-    user = mongo.db.users.find({ 'username': session['username'] })
+    user = mongo.db.users.find_one({ 'username': session['username'] })
     price = get_stock_price(stockCode)
     stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
-    comments = mongo.db.comments.find({ 'stockCode': stockCode })
+    comments = mongo.db.comments.find({ 'stockCode': stockCode }).sort('createdAt')
     if request.method == 'POST':
       add_comment(request.form['comment'], stockCode)
     return render_template('stock.html', user=user, price=price, stock=stock, comments=comments)

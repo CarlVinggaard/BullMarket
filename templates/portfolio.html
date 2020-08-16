@@ -30,7 +30,7 @@
             <th></th>
           </tr>
           {% if user.portfolio %}
-            {% for stock in user.portfolio %}
+            {% for stock in user.portfolio|sort(attribute='stockCode') %}
               {% if stock.quantity > 0 %}
                 <tr height="50px">
                   <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>

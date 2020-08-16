@@ -13,7 +13,7 @@
           <th class="text-right px-4">Total value</th>
         </tr>
         {% if user.trades %}
-          {% for trade in user.trades %}
+          {% for trade in user.trades|sort(attribute='timestamp', reverse=True) %}
             <tr height="40px">
               <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
               <td class="text-left px-4">{{ trade.type }}</td>
