@@ -8,7 +8,7 @@
     </div>
     <div class="flex w-auto justify-center items-end mt-4">
       <div class="text-4xl text-center uppercase font-light">Cash available</div>
-      <div class="text-4xl text-center font-bold ml-8">€ {{ user.cash }}</div>
+      <div class="text-4xl text-center font-bold ml-8">€ {{ user.cash|round(2) }}</div>
     </div>
     <div id="stock-table" class="mt-12 flex justify-center">
       <table class="uppercase table-fixed">
@@ -25,7 +25,7 @@
             <td class="text-right px-4">$ {{ data[stock]|round(2) }}</td>
             <td class="">
               <div class="flex pl-6">
-                <button class="text-white uppercase font-bold w-20 bg-orange-500 py-2 rounded-lg mr-3">Buy</button>
+                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center uppercase font-bold w-20 bg-orange-500 py-2 rounded-lg">Buy</a>
               </div>
             </td>
           </tr>

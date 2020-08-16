@@ -7,7 +7,7 @@
         <h5 class="uppercase">Current portfolio value</h5>
 
         <div class="mt-2">
-          <span class="text-green-600 text-6xl font-bold">$ {{ user.cash + value }}</span>
+          <span class="text-green-600 text-6xl font-bold">$ {{ (user.cash + value)|round(2) }}</span>
         </div>
 
         <div class="mt-4">
@@ -31,13 +31,19 @@
           </tr>
           {% if user.portfolio %}
             {% for stock in user.portfolio %}
-              <tr height="50px">
-                <td class="text-left px-4">{{ stock.stockCode }}</td>
-                <td class="text-right px-4">{{ stock.quantity }}</td>
-                <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
-                <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
-                <td><button class="text-white uppercase font-bold w-20 bg-blue-500 py-2 rounded-lg">Sell</button></td>
-              </tr>
+              {% if stock.quantity > 0 %}
+                <tr height="50px">
+                  <td class="text-left px-4">{{ stock.stockCode }}</td>
+                  <td class="text-right px-4">{{ stock.quantity }}</td>
+                  <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
+                  <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
+                  <td>
+                    <div class="flex pl-6">
+                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded-lg">Sell</a>
+                    </div>
+                  </td>
+                </tr>
+              {% endif %}
             {% endfor %}
               <tr height="80px">
                 <td class="normal-case font-bold text-left">Available cash</td>
