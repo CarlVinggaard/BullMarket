@@ -6,6 +6,7 @@ import logging
 from datetime import datetime
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 MONGO_URI = os.getenv('MONGO_URI')
 
@@ -18,7 +19,6 @@ mongo = PyMongo(app)
 def get_stock_data():
   stockCodeArray = []
   stocks = mongo.db.stocks.find()
-
   for stock in stocks:
     stockCodeArray.append(stock['stockCode'])
   
@@ -79,11 +79,12 @@ def sell_stock(stockCode, quantity, price):
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00, 'portfolio': [] })
-  return
 
 def add_comment(content, stockCode):
   mongo.db.comments.insert({ 'content': content, 'stockCode': stockCode, 'createdAt': datetime.now(), 'username': session['username'] })
-  return 
+
+def delete_comment(id):
+  mongo.db.comments.delete_one({ '_id': ObjectId(id) })
 
 
 # ROUTES
@@ -165,9 +166,13 @@ def stock(stockCode):
     price = get_stock_price(stockCode)
     stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
     comments = mongo.db.comments.find({ 'stockCode': stockCode }).sort('createdAt')
+    id = ''
     if request.method == 'POST':
-      add_comment(request.form['comment'], stockCode)
-    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments)
+      if 'delete' in request.form:
+        delete_comment(request.form['delete'])
+      else:
+        add_comment(request.form['comment'], stockCode)
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, id=id)
   else:
     return redirect(url_for('index'))
 
