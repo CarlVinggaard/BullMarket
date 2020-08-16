@@ -42,16 +42,17 @@ def get_total_value(username):
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
-def buy_stock(stockCode, quantity):
-  exists = mongo.db.users.find({ 'username': session['username'], 'portfolio.stockCode': stockCode })
-  if not exists:
-    userQuery = { 'username': session['username'] }
-    addToSet = { '$addToSet': { 'portfolio': { 'stockCode': stockCode, 'quantity': 0 } } }
-    mongo.db.users.update_one(userQuery, addToSet)
-  else:
-    query = { 'username': session['username'], 'portfolio.stockCode': stockCode }
-    value = { '$inc': { 'portfolio.$.quantity': quantity } }
-    mongo.db.users.update_one(query, value)
+def buy_stock(stockCode, quantity, price):
+  # If there is no object with this stock code in the portfolio, create one
+  mongo.db.users.update({ 'username': session['username'], 'portfolio.stockCode': { '$ne': stockCode } }, { '$push': { 'portfolio': { 'stockCode': stockCode, 'quantity': 0 } } })
+ 
+  # Increment it with <quantity>
+  query = { 'username': session['username'], 'portfolio.stockCode': stockCode }
+  value = { '$inc': { 'portfolio.$.quantity': quantity } }
+  mongo.db.users.update_one(query, value)
+
+  # Subtract the cash
+  mongo.db.users.update({ 'username': session['username']}, { '$inc': { 'cash': -(quantity * price) } })
 
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00 })
@@ -91,18 +92,15 @@ def trade():
 def buy(stockCode):
   price = get_stock_price(stockCode)
   total = 0
-  formData = {}
-  code = ''
-  qty = 0
+  quantity = 0
   if request.method == "POST":
     quantity = int(request.form["quantity"])
     total = quantity * price
-    formData = request.form
     if 'buy' in request.form:
       # Check if valid purchase
-      buy_stock(stockCode, quantity)
+      buy_stock(stockCode, quantity, price)
       return redirect(url_for('index'))
-  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total, formData=formData, qty=qty, code=code)
+  return render_template('buy.html', user=mongo.db.users.find_one({ 'username': session['username']}), data=get_stock_data(), stock=stockCode, price=price, total=total, quantity=quantity)
 
 @app.route('/logout')
 def logout():
