@@ -9,7 +9,7 @@
   - type: string ('buy' | 'sell')
   - quantity: integer
   - price: double
-  - timestamp: timestamp
+  - timestamp: date
 - valueAtLastTrade: double
 
 ### stocks/{stockId}
