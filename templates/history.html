@@ -15,8 +15,13 @@
         {% if user.trades %}
           {% for trade in user.trades|sort(attribute='timestamp', reverse=True) %}
             <tr height="40px">
-              <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
-              <td class="text-left px-4">{{ trade.type }}</td>
+              <td class="text-left px-4 text-lg"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
+              {% if trade.type == 'buy' %}
+                <td class="text-left px-4 font-bold text-orange-500">
+              {% elif trade.type == 'sell' %}
+                <td class="text-left px-4 font-bold text-blue-500">
+              {% endif %}
+                {{ trade.type }}</td>
               <td class="text-right px-4">{{ trade.timestamp.strftime("%b %d '%y %H:%M") }}</td>
               <td class="text-right px-4">{{ trade.quantity|round(2) }}</td>
               <td class="text-right px-4">$ {{ trade.price|round(2) }}</td>

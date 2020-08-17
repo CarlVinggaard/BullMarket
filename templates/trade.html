@@ -20,12 +20,13 @@
         </tr>
         {% for stock in data %}
           <tr height="50px">
-            <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock }}">{{ stock }}</a></div></td>
+            <td class="text-left text-lg px-4"><div><a href="{{ '/stocks/%s'%stock }}">{{ stock }}</a></div></td>
             <td class="text-right px-4"></td>
             <td class="text-right px-4">$ {{ data[stock]|round(2) }}</td>
             <td class="">
               <div class="flex pl-6">
-                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center uppercase font-bold w-20 bg-orange-500 py-2 rounded-lg">Buy</a>
+                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center uppercase font-bold w-20 bg-orange-500 py-2 rounded mr-2">Buy</a>
+                <a href="{{ '/sell/%s'%stock }}" class="text-white text-center uppercase font-bold w-20 bg-blue-500 py-2 rounded">Sell</a>
               </div>
             </td>
           </tr>

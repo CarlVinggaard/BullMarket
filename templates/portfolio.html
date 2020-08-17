@@ -33,23 +33,24 @@
             {% for stock in user.portfolio|sort(attribute='stockCode') %}
               {% if stock.quantity > 0 %}
                 <tr height="50px">
-                  <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
+                  <td class="text-left text-lg px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
                   <td class="text-right px-4">{{ stock.quantity }}</td>
                   <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
                   <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
                   <td>
                     <div class="flex pl-6">
-                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded-lg">Sell</a>
+                      <a href="{{ '/buy/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-orange-500 py-2 rounded mr-2">Buy</a>
+                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded">Sell</a>
                     </div>
                   </td>
                 </tr>
               {% endif %}
             {% endfor %}
               <tr height="80px">
-                <td class="normal-case font-bold text-left">Available cash</td>
+                <td class="normal-case font-bold text-left px-4">Available cash</td>
                 <td></td>
                 <td></td>
-                <td class="font-bold text-right">$ {{ user.cash|round(2) }}</td>
+                <td class="font-bold text-right px-4">$ {{ user.cash|round(2) }}</td>
               </tr>
             </table>
           {% else %}
