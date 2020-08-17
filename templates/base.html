@@ -3,37 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
   <title>Bull Market</title>
 </head>
-<body>
-  <nav class='flex items-center justify-between py-6 px-20'>
-    <div class='flex'>
-      <img class="object-contain" src="https://img.icons8.com/metro/100/000000/bull.png"/>
-      <div class='text-right'>
-        <h2 style="font-size: 72px">Bull Market</h2>
-        <p class="text-xl">Stock Trading Game</p>
+<header>
+  <nav>
+    <div class='flex items-center justify-around pt-6 px-10'>
+      <div class='flex pr-4 mr-16 max-w-sm'>
+        <img class="object-contain" src="{{ url_for('static', filename='bull.png') }}"/>
+      </div>
+      <div class="block md:hidden">
+        <button onclick="toggleNav()" class="flex items-center px-3 py-2">
+          <svg class="fill-current h-8 w-8" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="md:items-center md:w-auto md:block hidden">
+        <ul class="flex items-center uppercase font-bold">
+          <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-black' if active == 'portfolio' else 'mr-8 lg:mr-16' }}"><a href="/">Portfolio</a></li>
+          <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-black' if active == 'history' else 'mr-8 lg:mr-16' }}"><a href="/history">History</a></li>
+          <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-orange-500 ml-6' if active == 'trade' else 'mr-8 lg:mr-16' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
+          <li class="font-normal text-sm mr-2 lg:mr-6"><a href="/logout">Logout</a></li>
+        </ul>
       </div>
     </div>
-    <div class="block md:hidden">
-      <button class="flex items-center px-3 py-2">
-        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <title>Menu</title>
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
-        </svg>
-      </button>
-    </div>
-    <div class="md:flex md:items-center md:w-auto">
-      <ul class="flex items-center uppercase font-bold">
-        <li class="{{ 'mr-16 border-b-2 border-black' if active == 'portfolio' else 'mr-16' }}"><a href="/">Portfolio</a></li>
-        <li class="{{ 'mr-16 border-b-2 border-black' if active == 'history' else 'mr-16' }}"><a href="/history">History</a></li>
-        <li class="{{ 'mr-16 border-b-2 border-orange-500 ml-6' if active == 'trade' else 'mr-10' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
+    <div class="md:hidden">
+      <ul id="mobile-menu" class="hidden flex-col items-end uppercase font-bold mr-20 pt-4 sm:pt-0">
+        <li class="{{ 'mb-4 border-b-2 border-black' if active == 'portfolio' else 'mb-4' }}"><a href="/">Portfolio</a></li>
+        <li class="{{ 'mb-4 border-b-2 border-black' if active == 'history' else 'mb-4' }}"><a href="/history">History</a></li>
+        <li class="{{ 'mb-4 border-b-2 border-orange-500' if active == 'trade' else 'mb-4' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
+        <li class="font-normal text-sm"><a href="/logout">Logout</a></li>
       </ul>
     </div>
   </nav>
-  <div id='content'>
+</header>
+<body>
+  <div class="p-12" id='content'>
     {% block content %}{% endblock %}
   </div>
+
+  <script>
+    function toggleNav() {
+      var x = document.getElementById("mobile-menu");
+      if (x.style.display === "flex") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "flex";
+      }
+    }
+  </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
         <h5 class="uppercase">Current portfolio value</h5>
 
         <div class="mt-2">
-          <span class="text-green-600 text-6xl font-bold">$ {{ (user.cash + value)|round(2) }}</span>
+          <span class="text-green-600 text-5xl md:text-6xl font-bold">${{ (user.cash + value)|round(2) }}</span>
         </div>
 
         <div class="mt-4">
@@ -16,40 +16,41 @@
               <h5>Changed <span class="text-green-600 font-bold">$ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
             {% endif %}
           </div>
-          <h5 class="mt-4 ">You have currently made $ {{ (user.cash + value - 20000)|round(2) }}</h5>
+          <h5 class="mt-4 ">You have currently made ${{ (user.cash + value - 20000)|round(2) }}</h5>
         </div>
       </section>
 
       <section id="portfolio-overview" class="mt-12">
-        <table class="uppercase table-fixed">
+        <table class="uppercase">
           <tr height="66px">
-            <th class="text-left px-4">Stock</th>
-            <th class="text-right px-4">Quantity</th>
-            <th class="text-right px-4">Price/Stock</th>
-            <th class="text-right px-4">Total value</th>
-            <th></th>
+            <th class="text-left text-sm md:text-base px-4">Stock</th>
+            <th class="text-right text-sm md:text-base px-4">Qty.</th>
+            <th class="text-right text-sm md:text-base px-4">Price/Stock</th>
+            <th class="text-right text-sm md:text-base px-4">Total value</th>
+            <th class="hidden md:block"></th>
           </tr>
           {% if user.portfolio %}
             {% for stock in user.portfolio|sort(attribute='stockCode') %}
               {% if stock.quantity > 0 %}
                 <tr height="50px">
-                  <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
-                  <td class="text-right px-4">{{ stock.quantity }}</td>
-                  <td class="text-right px-4">$ {{ data[stock.stockCode]|round(2) }}</td>
-                  <td class="text-right px-4">$ {{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
-                  <td>
+                  <td class="text-left text-md md:text-lg px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
+                  <td class="text-right text-sm md:text-base px-4">{{ stock.quantity }}</td>
+                  <td class="text-right text-sm md:text-base px-4">${{ data[stock.stockCode]|round(2) }}</td>
+                  <td class="text-right text-sm md:text-base px-4">${{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
+                  <td class="hidden md:table-cell">
                     <div class="flex pl-6">
-                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded-lg">Sell</a>
+                      <a href="{{ '/buy/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-orange-500 py-2 rounded mr-2">Buy</a>
+                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded">Sell</a>
                     </div>
                   </td>
                 </tr>
               {% endif %}
             {% endfor %}
               <tr height="80px">
-                <td class="normal-case font-bold text-left">Available cash</td>
+                <td class="normal-case font-bold text-left text-sm md:text-base px-4">Available cash</td>
                 <td></td>
                 <td></td>
-                <td class="font-bold text-right">$ {{ user.cash|round(2) }}</td>
+                <td class="font-bold text-right px-4">${{ user.cash|round(2) }}</td>
               </tr>
             </table>
           {% else %}

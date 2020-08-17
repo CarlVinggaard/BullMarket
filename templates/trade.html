@@ -4,28 +4,27 @@
 <div id="current-cash" class="flex justify-center mt-8">
   <div class="justify-center">
     <div>
-      <h5 class="text-center uppercase">Buy or sell stocks to increase the value of your portfolio!</h5>
+      <h5 class="text-center text-sm sm:text-base uppercase">Buy or sell stocks to increase the value of your portfolio!</h5>
     </div>
     <div class="flex w-auto justify-center items-end mt-4">
-      <div class="text-4xl text-center uppercase font-light">Cash available</div>
-      <div class="text-4xl text-center font-bold ml-8">€ {{ user.cash|round(2) }}</div>
+      <div class="text-xl md:text-4xl text-center uppercase font-light">Cash available</div>
+      <div class="text-xl md:text-4xl text-center font-bold ml-8">${{ user.cash|round(2) }}</div>
     </div>
     <div id="stock-table" class="mt-12 flex justify-center">
       <table class="uppercase table-fixed">
         <tr height="66px">
-          <th class="text-left px-4">Stock</th>
-          <th class="text-right px-4"></th>
-          <th class="text-right px-4">Price/Stock</th>
+          <th class="text-left text-sm md:text-base px-4">Stock</th>
+          <th class="text-righ text-sm md:text-base px-4">Price/Stock</th>
           <th class="w-24"></th>
         </tr>
         {% for stock in data %}
           <tr height="50px">
-            <td class="text-left px-4"><div><a href="{{ '/stocks/%s'%stock }}">{{ stock }}</a></div></td>
-            <td class="text-right px-4"></td>
-            <td class="text-right px-4">$ {{ data[stock]|round(2) }}</td>
+            <td class="text-left md:text-lg px-4"><div><a href="{{ '/stocks/%s'%stock }}">{{ stock }}</a></div></td>
+            <td class="text-right text-sm md:text-base px-4">${{ data[stock]|round(2) }}</td>
             <td class="">
-              <div class="flex pl-6">
-                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center uppercase font-bold w-20 bg-orange-500 py-2 rounded-lg">Buy</a>
+              <div class="flex md:pl-6">
+                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center uppercase font-bold w-12 md:w-20 bg-orange-500 py-1 md:py-2 rounded mr-2">Buy</a>
+                <a href="{{ '/sell/%s'%stock }}" class="text-white text-center uppercase font-bold w-12 md:w-20 bg-blue-500 py-1 md:py-2 rounded">Sell</a>
               </div>
             </td>
           </tr>

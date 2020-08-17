@@ -2,42 +2,48 @@
 {% set active = "stocks" %}
 {% block content %}
 <div class="flex justify-center">
-  <div style="max-width: 800px">
+  <div style="max-width: 1200px; width: 1200px">
     <div class="flex justify-between mb-12">
-        <div><div>Stock</div><div>{{ stock.stockCode }}</div></div>
-        <div><div>Current price</div><div>{{ price }}</div></div>
+        <div class="flex flex-col justify-between"><div class="font-bold text-xl">Stock</div><div class="font-bold text-2xl sm:text-4xl lg:text-6xl text-left text-gray-500 leading-none">{{ stock.stockCode }}</div></div>
+        <div class="flex flex-col justify-between"><div class="font-bold text-xl">Current price</div><div class="font-light text-xl sm:text-2xl lg:text-4xl text-right leading-none">${{ price }}</div></div>
     </div>
-    <div class="mb-24"><p>{{ stock.description }}</p></div>
+    <div><p>{{ stock.description }}</p></div>
+    <div class="flex justify-center mb-16 mt-6">
+      <a href="{{ '/buy/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-32 bg-orange-500 py-2 rounded mr-4">Buy</a>
+      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-32 bg-blue-500 py-2 rounded">Sell</a>
+    </div>
     <div id="comments">
       <h3 class="font-bold text-xl">Comments</h3>
       <div class="my-2">
         {% for comment in comments %}
-          <div class="w-full">
-            <div><p>{{ comment.username }}</p></div>
+          <div class="w-full mb-4">
+            <div><p class="text-gray-500 font-bold text-sm">{{ comment.username|capitalize() }} - <span class="font-normal">{{ comment.createdAt.strftime("%H:%M %d/%-m '%y") }}</span></p></div>
             <div class="flex justify-between">
-              <div class="">
+              <div class="mr-4">
                 {% if editing == comment._id %}
                   <form method="post">
                     <input name="edit" value="{{ comment.content }}" placeholder="Write a comment.." class="flex-grow border-b mr-6 px-3 border-black" />
                     <button type="submit" name="editing" value="{{ comment._id }}" class="text-gray-700 font-bold py-2 px-4 bg-gray-400 rounded">Update</button>
                   </form>
                 {% else %}
-                  <p>{{ comment.content }}</p>
-                </div>
-                <div>
-                  {% if comment.username == session['username'] %}
-                    <form method='post'>
-                      <button type="submit" name="editing" value="{{ comment._id }}" class="rounded bg-yellow-500 text-white px-2 py-1 text-xs">Edit</button>
+                  <p class="text-sm md:text-base">{{ comment.content }}</p>
+              </div>
+              <div>
+                {% if comment.username == session['username'] %}
+                  <form method='post'>
+                    <div class="flex align-center justify-between">
+                      <button type="submit" name="editing" value="{{ comment._id }}" class="rounded bg-yellow-500 text-white px-2 py-1 text-xs mr-2">Edit</button>
                       <button type="submit" name="delete" value="{{ comment._id }}" class="rounded bg-red-500 text-white px-2 py-1 text-xs">Delete</button>
-                    </form>
-                  {% endif %}
+                    </div>
+                  </form>
+                {% endif %}
                 {% endif %}
               </div>
             </div>
           </div>
         {% endfor %}
       </div>
-      <form method="post">
+      <form class="mt-8" method="post">
         <div class="flex">
           <input name="comment" placeholder="Write a comment.." class="flex-grow border-b mr-6 px-3 border-black" />
           <button type="submit" name="comment" class="text-gray-700 font-bold py-2 px-4 bg-gray-400 rounded">Comment</button>
