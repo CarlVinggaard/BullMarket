@@ -13,7 +13,7 @@
         <div class="mt-4">
           <div class="h-10">
             {% if user.cash and user.valueAtLastTrade %}
-              <h5>Changed <span class="text-green-600 font-bold">$ {{ user.cash - user.valueAtLastTrade }}</span> since last trade!</h5>
+              <h5>Changed <span class="text-gray-500 font-bold">${{ (user.cash + value - user.valueAtLastTrade)|round(2) }}</span> since last trade!</h5>
             {% endif %}
           </div>
           <h5 class="mt-4 ">You have currently made ${{ (user.cash + value - 20000)|round(2) }}</h5>
