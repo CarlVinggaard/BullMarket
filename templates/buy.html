@@ -2,22 +2,25 @@
 {% set active = "trade" %}
 {% block content %}
 <div class="flex justify-center">
-  <form method="post">
-    <h4>Buy {{ stock }} stock</h4>
-    <p>Price/stock <span>$ {{ price|round(2) }}</span></p>
-    <p>Cash available <span>$ {{ user.cash|round(2) }}</span></p>
-    <div class="flex-col flex my-4">
-      <label for="quantity">Quantity</label>
-      <input type="number" name="quantity" value="{{ quantity }}" class="border-gray-600 border-2 border-solid rounded mb-4" />
-      <button type="submit" name="calculate" class="bg-blue-500 rounded text-white font-bold uppercase text-center px-6 py-2">Calculate price</button>
+  <form style="max-width: 800px; width: 800px" method="post">
+    <h2 class="text-2xl md:text-4xl font-bold mb-6">Buy<span class="text-gray-500 md:text-6xl text-4xl">   {{ stock }}   </span>stock</h2>
+    <div class="flex justify-between mb-4"><p class="font-bold text-lg">Price/stock</p><span class="font-light text-xl">${{ price|round(2) }}</span></div>
+    <div class="flex justify-between mb-4"><p class="font-bold text-lg">Cash available</p><span class="font-light text-xl">${{ user.cash|round(2) }}</span></div>
+    <div class="flex align-center justify-between my-8">
+      <div class="flex">
+        <label class="mr-8 self-center text-lg" for="quantity">Quantity</label>
+        <input type="number" name="quantity" value="{{ quantity }}" class="border-gray-600 border-2 border-solid rounded self-center" />
+      </div>
+      <button type="submit" name="calculate" class="bg-blue-500 rounded text-white text-sm font-bold uppercase text-center px-6 py-2 h-12 self-center">Calculate price</button>
     </div>
-    <div class="h-16">
+    <div class="h-16 flex">
       {% if total != 0 %}
-      <span>$ {{ total }}</span>
+      <span class="text-lg mr-8">Total price</span>
+      <span class="text-lg font-light">${{ total }}</span>
       {% endif %}
     </div>
-    <div class="flex justify-center">
-      <button type="submit" name="buy" value=1 class="bg-orange-500 rounded text-white font-bold uppercase text-center px-6 py-2">Buy</button>
+    <div class="flex justify-center mb-2">
+      <button type="submit" name="buy" value=1 class="bg-orange-500 rounded text-white text-xl font-bold uppercase text-center px-24 py-2">Buy</button>
     </div>
     <div class="text-red-500 text-center">{{ error }}</div>
   </form>
