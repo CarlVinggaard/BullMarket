@@ -1,8 +1,5 @@
 import os
 import yfinance as yf
-import urllib
-import asyncio
-import logging
 from datetime import datetime
 from flask import Flask, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
