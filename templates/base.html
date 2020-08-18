@@ -27,7 +27,7 @@
           <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-black' if active == 'portfolio' else 'mr-8 lg:mr-16' }}"><a href="/">Portfolio</a></li>
           <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-black' if active == 'history' else 'mr-8 lg:mr-16' }}"><a href="/history">History</a></li>
           <li class="{{ 'mr-8 lg:mr-16 border-b-2 border-orange-500 ml-6' if active == 'trade' else 'mr-8 lg:mr-16' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
-          <li class="font-normal text-sm mr-2 lg:mr-6"><a href="/logout">Logout</a></li>
+          <li class="flex items-center font-normal capitalize text-right mr-2 lg:mr-6"><div><div>{{ session['username'] }}</div><a class="text-sm font-light" href="/logout">Logout</a></div><img class="h-10 ml-2" src="https://img.icons8.com/user" /></li>
         </ul>
       </div>
     </div>
@@ -35,8 +35,8 @@
       <ul id="mobile-menu" class="hidden flex-col items-end uppercase font-bold mr-20 pt-4 sm:pt-0">
         <li class="{{ 'mb-4 border-b-2 border-black' if active == 'portfolio' else 'mb-4' }}"><a href="/">Portfolio</a></li>
         <li class="{{ 'mb-4 border-b-2 border-black' if active == 'history' else 'mb-4' }}"><a href="/history">History</a></li>
-        <li class="{{ 'mb-4 border-b-2 border-orange-500' if active == 'trade' else 'mb-4' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
-        <li class="font-normal text-sm"><a href="/logout">Logout</a></li>
+        <li class="{{ 'mb-6 border-b-2 border-orange-500' if active == 'trade' else 'mb-4' }}"><a href="/trade" class="{{ 'text-orange-500' if active == 'trade' else 'px-6 py-2 bg-orange-500 text-white rounded' }}">Trade</a></li>
+        <li class="flex items-center font-normal capitalize text-right"><div><div>{{ session['username'] }}</div><a class="text-sm font-light" href="/logout">Logout</a></div><img class="h-10 ml-2" src="https://img.icons8.com/user" /></li>
       </ul>
     </div>
   </nav>
