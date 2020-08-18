@@ -77,6 +77,13 @@ def sell_stock(stockCode, quantity, price):
   # Add trade to history
   add_trade(stockCode, quantity, 'sell', price)
 
+def update_value_at_last_trade():
+  user = mongo.db.users.find_one({ 'username': session['username'] })
+  cash = user['cash']
+  total = get_total_value(session['username']) + cash
+  mongo.db.users.update_one({ 'username': session['username'] }, { '$set': { 'valueAtLastTrade': total } })
+
+
 def create_user(username):
   mongo.db.users.insert({ 'username': username, 'cash': 20000.00, 'portfolio': [] })
 
@@ -133,6 +140,7 @@ def buy(stockCode):
       if 'buy' in request.form:
         if is_valid_purchase(quantity, price, user['cash']):
           buy_stock(stockCode, quantity, price)
+          update_value_at_last_trade()
           return redirect(url_for('index'))
         else:
           error = "You don't have enough money for that."
@@ -155,6 +163,7 @@ def sell(stockCode):
       if 'sell' in request.form:
         if is_valid_sale(quantity, stockQuantity):
           sell_stock(stockCode, quantity, price)
+          update_value_at_last_trade()
           return redirect(url_for('index'))
         else:
           error = "You don't have that much of this stock."
