@@ -8,10 +8,8 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
-MONGO_URI = os.getenv('MONGO_URI')
-
 app = Flask(__name__)
-app.config["MONGO_URI"] = MONGO_URI 
+app.config["MONGO_URI"] = os.getenv('MONGO_URI')
 app.secret_key = "secretkey"
 mongo = PyMongo(app)
 
