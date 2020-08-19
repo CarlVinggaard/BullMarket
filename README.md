@@ -15,13 +15,13 @@ The overall user goal with the game is to practice buying and selling stocks. Th
 A prototype was made in Figma, a wireframing program. It can be seen at https://www.figma.com/file/M1r5m0fqqQbS5SbFkx8ZqYKN/Bull-Market?node-id=0%3A1
 
 ### Existing Features
-- Ability to make a user - To start with, a user can enter a username. Entering a new username creates a new user, while entering an existing username logs the user in.
-- Navbar - Allows easy navigation throughout the application 
-- Portfolio overview - The 'portfolio' page gives the user a clear overview over their current portfolio, including total value and all stock quantities.
-- Trade history - The 'history' page gives the user a a historical overview of all their trades and relevant information.
+- User creation and login - To start with, a user can enter a username. Entering a new username creates a new user, while entering an existing username logs the user in.
 - Stock listing - Allows the user to see all stocks in the game.
 - Single stock view - Allows the user to get an overview of a single stock, including a description of the company.
 - Comments - The comments section allows the players to interact with each other by commenting about specific stocks. This includes ability to edit and delete one's own comments.
+- Portfolio overview - The 'portfolio' page gives the user a clear overview over their current portfolio, including total value and all stock quantities.
+- Trade history - The 'history' page gives the user a a historical overview of all their trades and relevant information.
+- Navbar - Allows easy navigation throughout the application and is mobile-friendly. 
 
 ### Features Left to Implement
 - User profile - An overview over one's own profile.
@@ -68,13 +68,20 @@ If this section grows too long, you may want to split it off into a separate fil
 
 The project is deployed to Heroku, at https://bull-market.herokuapp.com/.
 
-It takes advantage of Heroku's option to deploy automatically from a Github repository. Updates to the master branch will thus be deployed automatically to the live app. Required environment variables are MONGO_URI (the link to the mongoDB database), PORT and IP.
+It takes advantage of Heroku's option to deploy automatically from a Github repository. Updates to the master branch will thus be deployed automatically to the live app.
+
+Required environment variables are:
+  1. **MONGO_URI** - the link to the mongoDB database
+  2. **SECRET_KEY** - A secret key used for session storage in the application
+  3. **PORT** - The port to use
+  4. **IP** - The server IP address
 
 In case you want to run the project locally, you can do so with the following steps:
   1. Clone the project
-  2. Install the dependencies from "requirements.txt" (pip install -r requirements.txt) and running:
-  3. Type "export FLASK_APP=app.py" in the terminal
-  4. Type "flask run" in the terminal
+  2. Install the dependencies from "requirements.txt" (pip install -r requirements.txt)
+  3. Create a .env file with the environment variables (see above) to use locally
+  4. Type "export FLASK_APP=app.py" in the terminal
+  5. Type "flask run" in the terminal
 
 There are no differences between the development and deployed versions of the app.
 

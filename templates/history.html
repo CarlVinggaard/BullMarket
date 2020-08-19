@@ -19,9 +19,9 @@
             <tr height="40px">
               <td class="text-left px-4 md:text-lg font-bold text-gray-600"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
               {% if trade.type == 'buy' %}
-                <td class="hidden sm:table-cell text-left px-4 font-bold text-orange-500">
+                <td class="hidden sm:table-cell text-left text-sm px-4 font-bold text-orange-500">
               {% elif trade.type == 'sell' %}
-                <td class="hidden sm:table-cell text-left px-4 font-bold text-blue-500">
+                <td class="hidden sm:table-cell text-left text-sm px-4 font-bold text-blue-500">
               {% endif %}
                 {{ trade.type }}</td>
               <td class="text-right text-sm md:text-base px-4">{{ trade.timestamp.strftime("%d/%-m-%y") }}</td>
