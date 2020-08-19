@@ -35,6 +35,14 @@ def get_total_value(username):
 
   return round(sum(list(map(get_stock_value, user['portfolio']))), 2)
 
+def get_comment_counts(data):
+  comments = {}
+  for stock in data:
+    count = mongo.db.comments.count({ 'stockCode': stock })
+    comments[stock] = count
+  return comments
+    
+
 def is_valid_purchase(quantity, price, cash):
   return quantity * price <= cash
 
@@ -117,7 +125,9 @@ def history():
 @app.route('/trade')
 def trade():
   if 'username' in session:
-    return render_template('trade.html', data=get_stock_data(), user=mongo.db.users.find_one({ 'username': session['username']}))
+    data = get_stock_data()
+    comments = get_comment_counts(data)
+    return render_template('trade.html', data=data, user=mongo.db.users.find_one({ 'username': session['username']}), comments=comments)
   else:
     return redirect(url_for('index'))
   

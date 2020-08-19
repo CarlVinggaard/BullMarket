@@ -11,36 +11,36 @@
         </div>
 
         <div class="mt-4">
-          <div class="h-10">
+          <div class="my-5">
             {% if user.cash and user.valueAtLastTrade %}
-              <h5>Changed <span class="text-gray-500 font-bold">${{ (user.cash + value - user.valueAtLastTrade)|round(2) }}</span> since last trade!</h5>
+              <h5 class="text-lg">... the balance since your last trade is <span class="font-bold">${{ (user.cash + value - user.valueAtLastTrade)|round(2) }}</span></h5>
             {% endif %}
           </div>
-          <h5 class="mt-4 ">You have currently made ${{ (user.cash + value - 20000)|round(2) }}</h5>
-        </div>
+          <h5 class="text-xl">Your current balance since the start of the game is <span class="mt-4 font-bold">${{ (user.cash + value - 20000)|round(2) }}</span></h5>
+        </div>  
       </section>
 
       <section id="portfolio-overview" class="mt-12">
-        <table class="uppercase">
-          <tr height="66px">
-            <th class="text-left text-sm md:text-base px-4">Stock</th>
-            <th class="text-right text-sm md:text-base px-4">Qty.</th>
-            <th class="text-right text-sm md:text-base px-4">Price/Stock</th>
-            <th class="text-right text-sm md:text-base px-4">Total value</th>
-            <th class="hidden md:block"></th>
-          </tr>
-          {% if user.portfolio %}
+        {% if user.portfolio %}
+          <table class="uppercase">
+            <tr height="66px">
+              <th class="text-left text-sm md:text-base px-4">Stock</th>
+              <th class="text-right text-sm md:text-base px-4">Qty.</th>
+              <th class="text-right text-sm md:text-base px-4">Price/Stock</th>
+              <th class="text-right text-sm md:text-base px-4">Total value</th>
+              <th class="hidden md:block"></th>
+            </tr>
             {% for stock in user.portfolio|sort(attribute='stockCode') %}
               {% if stock.quantity > 0 %}
                 <tr height="50px">
-                  <td class="text-left text-md md:text-lg px-4"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
+                  <td class="text-left text-md md:text-lg px-4 font-bold text-gray-600"><div><a href="{{ '/stocks/%s'%stock.stockCode }}">{{ stock.stockCode }}</a></div></td>
                   <td class="text-right text-sm md:text-base px-4">{{ stock.quantity }}</td>
                   <td class="text-right text-sm md:text-base px-4">${{ data[stock.stockCode]|round(2) }}</td>
                   <td class="text-right text-sm md:text-base px-4">${{ (stock.quantity * data[stock.stockCode])|round(2) }}</td>
                   <td class="hidden md:table-cell">
                     <div class="flex pl-6">
                       <a href="{{ '/buy/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-orange-500 py-2 rounded mr-2">Buy</a>
-                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-500 py-2 rounded">Sell</a>
+                      <a href="{{ '/sell/%s'%stock.stockCode }}" class="text-white uppercase text-center font-bold w-20 bg-blue-600 py-2 rounded">Sell</a>
                     </div>
                   </td>
                 </tr>
@@ -54,7 +54,6 @@
               </tr>
             </table>
           {% else %}
-            </table>
             <div class="mt-8 flex justify-center">
               <h5 class="text-grey-400">There are no stocks in your portfolio! Buy some to grow your portfolio value.</h5>
             </div>
