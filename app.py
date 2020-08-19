@@ -157,7 +157,10 @@ def buy(stockCode):
 def sell(stockCode):
   if 'username' in session:
     user = mongo.db.users.find_one({ 'username': session['username'] })
-    stockQuantity = [stock['quantity'] for stock in user['portfolio'] if stock['stockCode'] == stockCode][0]
+    try:
+      stockQuantity = [stock['quantity'] for stock in user['portfolio'] if stock['stockCode'] == stockCode][0]
+    except:
+      stockQuantity = 0
     price = get_stock_price(stockCode)
     total = 0
     quantity = 0
