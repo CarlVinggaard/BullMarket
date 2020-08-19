@@ -7,7 +7,7 @@ from bson.objectid import ObjectId
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = os.getenv('MONGO_URI')
-app.secret_key = "secretkey"
+app.secret_key = os.getenv('SECRET_KEY')
 mongo = PyMongo(app)
 
 # FUNCTIONS
