@@ -35,11 +35,11 @@ def trade():
   else:
     return redirect(url_for('index'))
   
-@app.route('/buy/<stockCode>', methods=['GET', 'POST'])
-def buy(stockCode):
+@app.route('/buy/<stock_code>', methods=['GET', 'POST'])
+def buy(stock_code):
   if 'username' in session:
     user = mongo.db.users.find_one({ 'username': session['username']})
-    price = get_stock_price(stockCode)
+    price = get_stock_price(stock_code)
     total = 0
     quantity = 0
     error = ''
@@ -48,24 +48,24 @@ def buy(stockCode):
       total = quantity * price
       if 'buy' in request.form:
         if is_valid_purchase(quantity, price, user['cash']):
-          buy_stock(stockCode, quantity, price)
+          buy_stock(stock_code, quantity, price)
           update_value_at_last_trade()
           return redirect(url_for('index'))
         else:
           error = "You don't have enough money for that."
-    return render_template('buy.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error)
+    return render_template('buy.html', user=user, stock=stock_code, price=price, total=total, quantity=quantity, error=error)
   else:
     return redirect(url_for('inde'))
 
-@app.route('/sell/<stockCode>', methods=['GET', 'POST'])
-def sell(stockCode):
+@app.route('/sell/<stock_code>', methods=['GET', 'POST'])
+def sell(stock_code):
   if 'username' in session:
     user = mongo.db.users.find_one({ 'username': session['username'] })
     try:
-      stockQuantity = [stock['quantity'] for stock in user['portfolio'] if stock['stockCode'] == stockCode][0]
+      stock_quantity = [stock['quantity'] for stock in user['portfolio'] if stock['stockCode'] == stock_code][0]
     except:
-      stockQuantity = 0
-    price = get_stock_price(stockCode)
+      stock_quantity = 0
+    price = get_stock_price(stock_code)
     total = 0
     quantity = 0
     error = ''
@@ -73,37 +73,37 @@ def sell(stockCode):
       quantity = int(request.form["quantity"])
       total = quantity * price
       if 'sell' in request.form:
-        if is_valid_sale(quantity, stockQuantity):
-          sell_stock(stockCode, quantity, price)
+        if is_valid_sale(quantity, stock_quantity):
+          sell_stock(stock_code, quantity, price)
           update_value_at_last_trade()
           return redirect(url_for('index'))
         else:
           error = "You don't have that much of this stock."
-    return render_template('sell.html', user=user, stock=stockCode, price=price, total=total, quantity=quantity, error=error, stockQuantity=stockQuantity)
+    return render_template('sell.html', user=user, stock=stock_code, price=price, total=total, quantity=quantity, error=error, stock_quantity=stock_quantity)
   else:
     return redirect(url_for('index'))
 
-@app.route('/stocks/<stockCode>', methods=['GET', 'POST'])
-def stock(stockCode):
+@app.route('/stocks/<stock_code>', methods=['GET', 'POST'])
+def stock(stock_code):
   if 'username' in session:
     user = mongo.db.users.find_one({ 'username': session['username'] })
-    price = get_stock_price(stockCode)
-    stock = mongo.db.stocks.find_one({ 'stockCode': stockCode })
-    comments = mongo.db.comments.find({ 'stockCode': stockCode }).sort('createdAt')
-    editingId = ''
+    price = get_stock_price(stock_code)
+    stock = mongo.db.stocks.find_one({ 'stockCode': stock_code })
+    comments = mongo.db.comments.find({ 'stockCode': stock_code }).sort('createdAt')
+    editing_id = ''
     if request.method == 'POST':
       if 'delete' in request.form:
         delete_comment(request.form['delete'])
       elif 'edit' in request.form:
         edit_comment(request.form['editing'], request.form['edit'])
-        editingId = ''
+        editing_id = ''
       elif 'editing' in request.form:
-        editingId = ObjectId(request.form['editing'])
+        editing_id = ObjectId(request.form['editing'])
       elif 'comment' in request.form:
-        add_comment(request.form['comment'], stockCode)
+        add_comment(request.form['comment'], stock_code)
       else:
         return request.form
-    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editingId)
+    return render_template('stock.html', user=user, price=price, stock=stock, comments=comments, editing=editing_id)
   else:
     return redirect(url_for('index'))
 
