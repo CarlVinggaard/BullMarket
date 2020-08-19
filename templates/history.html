@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 {% set active = "history" %}
 {% block content %}
+  <div class="flex justify-center">
+    <h2 class="font-bold text-4xl">Trade history</h2>
+  </div>
   <div class="flex justify-center mt-8">
-    <div class="">
-      <table class="uppercase table-fixed">
-        <tr height="66px">
-          <th class="text-left text-sm md:text-base px-4">Stock</th>
-          <th class="text-left text-sm md:text-base px-4">Type</th>
-          <th class="hidden sm:table-cell text-right text-sm md:text-base px-4">Timestamp</th>
-          <th class="text-right text-sm md:text-base px-4">Quantity</th>
-          <th class="hidden sm:table-cell text-right text-sm md:text-base px-4">Price/Stock</th>
-          <th class="text-right text-sm md:text-base px-4">Total value</th>
-        </tr>
         {% if user.trades %}
+          <table class="uppercase table-fixed">
+            <tr height="66px">
+              <th class="text-left text-sm md:text-base px-4">Stock</th>
+              <th class="text-left text-sm md:text-base px-4">Type</th>
+              <th class="hidden sm:table-cell text-right text-sm md:text-base px-4">Date</th>
+              <th class="text-right text-sm md:text-base px-4">Quantity</th>
+              <th class="hidden sm:table-cell text-right text-sm md:text-base px-4">Price/Stock</th>
+              <th class="text-right text-sm md:text-base px-4">Total value</th>
+            </tr>
           {% for trade in user.trades|sort(attribute='timestamp', reverse=True) %}
             <tr height="40px">
-              <td class="text-left px-4 md:text-lg"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
+              <td class="text-left px-4 md:text-lg font-bold text-gray-600"><div><a href="{{ '/stocks/%s'%trade.stockCode }}">{{ trade.stockCode }}</a></div></td>
               {% if trade.type == 'buy' %}
                 <td class="hidden sm:table-cell text-left px-4 font-bold text-orange-500">
               {% elif trade.type == 'sell' %}
                 <td class="hidden sm:table-cell text-left px-4 font-bold text-blue-500">
               {% endif %}
                 {{ trade.type }}</td>
-              <td class="text-right text-sm md:text-base px-4">{{ trade.timestamp.strftime("%d/%-m '%y") }}</td>
+              <td class="text-right text-sm md:text-base px-4">{{ trade.timestamp.strftime("%d/%-m-%y") }}</td>
               <td class="text-right text-sm md:text-base px-4">{{ trade.quantity|round(2) }}</td>
               <td class="hidden sm:table-cell text-right text-sm md:text-base px-4">${{ trade.price|round(2) }}</td>
               <td class="text-right text-sm md:text-base px-4">${{ (trade.quantity * trade.price)|round(2) }}</td>
@@ -30,11 +32,9 @@
             {% endfor %}
           </table>
         {% else %}
-          </table>
           <div class="flex justify-center">
             <h5>You have not made any trades yet.</h5>
           </div>
         {% endif %}
-    </div>
   </div>
 {% endblock %}
