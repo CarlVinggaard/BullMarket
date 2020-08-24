@@ -97,6 +97,12 @@ In order to execute the functions, valid environment variables must be defined i
 
 ### Testing different devices and browsers
 
+The application has been tested with different browsers and on a variety of screens:
+
+- Mobile: OnePlus 6T, using Google Chrome.
+- Laptop: MacBook Pro, MacOs, using Safari.
+- Desktop Asus, Windows 10, using Firefox.
+
 ## Deployment
 
 The project is deployed to Heroku, at https://bull-market.herokuapp.com/.

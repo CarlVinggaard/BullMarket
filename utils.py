@@ -7,8 +7,8 @@ import yfinance as yf
 
 def create_flask_app():
   app = Flask(__name__)
-  app.config["MONGO_URI"] = os.getenv("MONGO_URI") or "mongodb+srv://"
-  app.secret_key = os.getenv("SECRET_KEY") or "secretkey"
+  app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+  app.secret_key = os.getenv("SECRET_KEY")
   return app
 
 mongo = PyMongo(create_flask_app())

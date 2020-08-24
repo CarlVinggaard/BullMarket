@@ -6,12 +6,14 @@
     <h2 class="text-2xl md:text-4xl font-bold mb-6">Sell<span class="text-gray-500 md:text-6xl text-4xl">   {{ stock }}   </span>stock</h2>
     <div class="flex justify-between mb-4"><p class="font-bold text-lg">Price/stock</p><span class="font-light text-xl">${{ price|round(2) }}</span></div>
     <div class="flex justify-between mb-4"><p class="font-bold text-lg">Current quantity in portfolio</p><span class="font-light text-xl">{{ stock_quantity }}</span></div>
-    <div class="flex align-center justify-between my-8">
-      <div class="flex">
+    <div class="sm:flex align-center justify-between my-8">
+      <div class="flex mb-4">
         <label class="mr-8 self-center text-lg" for="quantity">Quantity</label>
         <input type="number" name="quantity" value="{{ quantity }}" class="border-gray-600 border-2 border-solid rounded self-center" />
       </div>
+      <div class="flex justify-center mb-4">
       <button type="submit" name="calculate" class="bg-blue-500 rounded text-white text-sm font-bold uppercase text-center px-6 py-2 h-12 self-center">Calculate price</button>
+      </div>
     </div>
     <div class="h-16 flex">
       {% if total != 0 %}
