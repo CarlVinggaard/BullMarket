@@ -43,26 +43,59 @@ In this section, you should mention all of the languages, frameworks, libraries,
   - **Venv** is a virtual environment used to guanrantee a functioning environment during development.
 - [Flask-PyMongo](https://flask-pymongo.readthedocs.io/en/latest/)
   - The **Flask-PyMongo** library is used to easily connect the flask application the the database.
+- [unittest](https://docs.python.org/3/library/unittest.html)
+  - The **Unittest** python module has been used for automated testing.
 
 ## Testing
 
-In this section, you need to convince the assessor that you have conducted enough testing to legitimately believe that the site works well. Essentially, in this part you will want to go over all of your user stories from the UX section and ensure that they all work as intended, with the project providing an easy and straightforward way for the users to achieve their goals.
+### User goal testing
 
-Whenever it is feasible, prefer to automate your tests, and if you've done so, provide a brief explanation of your approach, link to the test file(s) and explain how to run them.
+Important tests of the user's ability to complete their goals are:
 
-For any scenarios that have not been automated, test the user stories manually and provide as much detail as is relevant. A particularly useful form for describing your testing process is via scenarios, such as:
+- Try to create a new user from the front page
+  - Check that entering a username and clicking 'start trading' directs to the portfolio page.
+  - Check that there is $20000 cash and an empty portfolio.
+  - Check that the correct username is written in the top right corner.
 
-1. Contact form:
-    1. Go to the "Contact Us" page
-    2. Try to submit the empty form and verify that an error message about the required fields appears
-    3. Try to submit the form with an invalid email address and verify that a relevant error message appears
-    4. Try to submit the form with all inputs valid and verify that a success message appears.
+- Buy some stock
+  - Click the 'buy' button (from the 'portfolio' or 'trade' pages) and check that directs to '/buy/<stockCode>'.
+  - Enter a quantity of stock, click 'calculate price' and checks that a correct value is displayed.
+  - Click 'buy', check that it redirects to the 'portfolio' page, and that the correct quantity of stock has been added to the portfolio.
+  - Enter a too high quantity of stock (total value > available cash), click 'buy', and check that an error is displayed.
+  - Go to '/history' and check that any successful purchases have been added to the page.
 
-In addition, you should mention in this section how your project looks and works on different browsers and screen sizes.
+- Sell some stock
+  - Click the 'sell' button (from the 'portfolio' or 'trade' pages) and check that directs to '/sell/<stockCode>'.
+  - Enter a quantity of stock, click 'calculate price' and checks that a correct value is displayed.
+  - Click 'sell', check that it redirects to the 'portfolio' page, and that the correct quantity of stock has been removed to the portfolio.
+  - Enter a too high quantity of stock (quantity > current quantity in portfolio), click 'sell', and check that an error is displayed.
+  - Go to '/history' and check that any successful purchases have been added to the page.
 
-You should also mention in this section any interesting bugs or problems you discovered during your testing, even if you haven't addressed them yet.
+- Write a comment
+  - Go to a stock, write a comment, and click 'comment'.
+  - Check that the 'edit' and 'delete' buttons are there for the users own comments, but not for others.
+  - Check that username and timestamp are displayed correctly.
 
-If this section grows too long, you may want to split it off into a separate file and link to it from here.
+- Update a comment
+  - Go to a stock that the user has commented on.
+  - Click 'update' next to one of the user's own comments.
+  - Edit the comment in the input box and click 'update'.
+  - Check that the comment has been updated.
+
+- Delete a comment
+  - Go to a stock that the user has commented on.
+  - Click 'delete' next to one of the user's own comments.
+  - Check that the comment has been deleted.
+
+
+### Unit testing
+
+Automatic unit testing of certain functions has been implemented using the 'unittest' module. These can be found in tests/test.py.
+These tests helped make sure that the functions would work and return the correct errors if given wrong input.
+
+In order to execute the functions, valid environment variables must be defined in the runtime environment.
+
+### Testing different devices and browsers
 
 ## Deployment
 
