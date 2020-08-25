@@ -1,8 +1,15 @@
-from flask import render_template, request, session, redirect, url_for
+import os
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-from utils import *
 
-app = create_flask_app()
+app = Flask(__name__)
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+app.secret_key = os.getenv("SECRET_KEY")
+
+mongo = PyMongo(app)
+
+from utils import *
 
 ''' ROUTES '''
 
@@ -123,7 +130,7 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.run(host=os.getenv("IP"),
-            port=int(os.getenv("PORT")),
-            debug=True)
+  app.run(host=os.getenv("IP"),
+    port=int(os.getenv("PORT")),
+    debug=True)
             

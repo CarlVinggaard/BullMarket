@@ -93,7 +93,14 @@ Important tests of the user's ability to complete their goals are:
 Automatic unit testing of certain functions has been implemented using the 'unittest' module. These can be found in tests/test.py.
 These tests helped make sure that the functions would work and return the correct errors if given wrong input.
 
-In order to execute the functions, valid environment variables must be defined in the runtime environment.
+In order to execute the functions, a valid MONGO_URI environment variable must be defined in the terminal. One option is to enter a fake URI:
+> export MONGO_URI="mongodb://test"
+
+This will make the test run (without failures), but it will have errors because the correct collections won't be found in mongo. 
+Alternatively, use a real URI for a MongoDB with the collections 'users', 'stocks' and 'comments' (see the data model below for more detail).
+
+When this is done, execute the tests with the command:
+> 'python3 -m unittest tests/test.py'
 
 ### Testing different devices and browsers
 

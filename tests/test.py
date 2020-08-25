@@ -1,31 +1,33 @@
 import os
 from flask import Flask, session
 import unittest
-from flask_pymongo import PyMongo
 from app import app
 from utils import get_stock_price, is_valid_purchase, is_valid_sale, get_total_value, get_comment_counts, get_stock_data, create_user
 
 class TestRoutesWithoutLogin(unittest.TestCase):
+  
+  def setUp(self):
+    app.config["TESTING"] = True
+    self.tester = app.test_client(self)
 
   def test_index(self):
-    tester = app.test_client(self)
-    response = tester.get("/", content_type="html/text")
+    response = self.tester.get("/", content_type="html/text")
     self.assertEquals(response.status_code, 200)
 
   def test_history_status_code(self):
-    tester = app.test_client(self)
-    response = tester.get("/history", content_type="html/text")
+    response = self.tester.get("/history", content_type="html/text")
     self.assertEquals(response.status_code, 302)
 
   def test_trade_redirect_works(self):
-    tester = app.test_client(self)
-    response = tester.get("/trade", content_type="html/text", follow_redirects=True)
+    response = self.tester.get("/trade", content_type="html/text", follow_redirects=True)
     self.assertEquals(response.status_code, 200)
 
 ''' DOESN'T WORK 
 class TestRoutesWithLogin(unittest.TestCase):
 
   def setUp(self):
+    app.config["TESTING"] = True
+    app.secret_key = "testsecretkey"
     with app.test_client() as c:
       with c.session_transaction() as session:
         session["username"] = "testusername"
@@ -37,12 +39,19 @@ class TestRoutesWithLogin(unittest.TestCase):
 
 class TestPostRequests(unittest.TestCase):
 
+  def setUp(self):
+    app.config["TESTING"] = True
+    app.secret_key = "secretkey"
+
   def test_input_username(self):
     tester = app.test_client(self)
     response = tester.post("/", data=dict(username="testusername"), follow_redirects=True)
     self.assertEquals(response.status_code, 200)
 
 class TestFunctions(unittest.TestCase):
+
+  def setUp(self):
+    app.config["TESTING"] = True
 
   def test_get_stock_price(self):
     priceAAPL = get_stock_price("AAPL")
