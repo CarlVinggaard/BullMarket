@@ -110,6 +110,14 @@ The application has been tested with different browsers and on a variety of scre
 - Laptop: MacBook Pro, MacOs, using Safari.
 - Desktop Asus, Windows 10, using Firefox.
 
+### Bugs/unfixed issues
+
+Two issues in the project were unable to be solved:
+1. Sometimes, on browser refresh, the logo will not load. When entering a username and logging in, the logo will always load correctly,
+and logging out again still produces the correct logo. This bug was not consistently present, and therefore hard to reproduce and even harder to fix.
+2. When running the test script, a valid MONGO_URI environment variable is required to be set in the terminal where the script is executed.
+Not setting it results in an error, even though none of the test functions call the mongo database.
+
 ## Deployment
 
 The project is deployed to Heroku, at https://bull-market.herokuapp.com/.

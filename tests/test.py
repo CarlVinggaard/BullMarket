@@ -22,21 +22,6 @@ class TestRoutesWithoutLogin(unittest.TestCase):
     response = self.tester.get("/trade", content_type="html/text", follow_redirects=True)
     self.assertEquals(response.status_code, 200)
 
-''' DOESN'T WORK 
-class TestRoutesWithLogin(unittest.TestCase):
-
-  def setUp(self):
-    app.config["TESTING"] = True
-    app.secret_key = "testsecretkey"
-    with app.test_client() as c:
-      with c.session_transaction() as session:
-        session["username"] = "testusername"
-
-  def test_history(self):
-    tester = app.test_client(self)
-    response = tester.get("/history", content_type="html/text")
-    self.assertEquals(response.status_code, 200) '''
-
 class TestPostRequests(unittest.TestCase):
 
   def setUp(self):
