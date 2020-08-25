@@ -4,19 +4,12 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from datetime import datetime
 import yfinance as yf
-
-def create_flask_app():
-  app = Flask(__name__)
-  app.config["MONGO_URI"] = os.getenv("MONGO_URI")
-  app.secret_key = os.getenv("SECRET_KEY")
-  return app
-
-mongo = PyMongo(create_flask_app())
+from app import mongo
 
 ''' FUNCTIONS '''
 
-''' Get data for all stocks in database, using the yfinance API. '''
 def get_stock_data():
+  ''' Get data for all stocks in database, using the yfinance API. '''
   stock_code_array = []
   stocks = mongo.db.stocks.find()
   for stock in stocks:
