@@ -8,7 +8,6 @@ class TestRoutesWithoutLogin(unittest.TestCase):
   
   def setUp(self):
     app.config["TESTING"] = True
-    app.config["MONGO_URI"] = "mongodb+srv://test"
     self.tester = app.test_client(self)
 
   def test_index(self):
@@ -28,7 +27,7 @@ class TestRoutesWithLogin(unittest.TestCase):
 
   def setUp(self):
     app.config["TESTING"] = True
-    app.config["SECRET_KEY"] = "testsecretkey"
+    app.secret_key = "testsecretkey"
     with app.test_client() as c:
       with c.session_transaction() as session:
         session["username"] = "testusername"
@@ -36,12 +35,13 @@ class TestRoutesWithLogin(unittest.TestCase):
   def test_history(self):
     tester = app.test_client(self)
     response = tester.get("/history", content_type="html/text")
-    self.assertEquals(response.status_code, 200) 
+    self.assertEquals(response.status_code, 200) '''
 
 class TestPostRequests(unittest.TestCase):
 
   def setUp(self):
     app.config["TESTING"] = True
+    app.secret_key = "secretkey"
 
   def test_input_username(self):
     tester = app.test_client(self)
@@ -73,8 +73,8 @@ class TestFunctions(unittest.TestCase):
     self.assertRaises(TypeError, is_valid_purchase, [2], 3)
     self.assertRaises(TypeError, is_valid_purchase, { "AAPL": 1400 }, 5)
 
-This module can only be tested with a MonogDB database, that contains the correct stock collections.
-The data model for the collection is described in the README.md file. 
+''' This module can only be tested with a MonogDB database, that contains the correct stock collections.
+The data model for the collection is described in the README.md file. '''
 class TestDatabaseCalls(unittest.TestCase):
 
   def test_get_total_value(self):
@@ -86,7 +86,7 @@ class TestDatabaseCalls(unittest.TestCase):
     counts = get_comment_counts(data)
     self.assertTrue(isinstance(counts, dict))
     self.assertTrue(isinstance(counts["AAPL"], int))
-    self.assertTrue(isinstance(counts["GOOG"], int)) '''
+    self.assertTrue(isinstance(counts["GOOG"], int))
   
 if __name__ == "__main__":
     unittest.main(exit=False)
