@@ -93,7 +93,9 @@ Important tests of the user's ability to complete their goals are:
 Automatic unit testing of certain functions has been implemented using the 'unittest' module. These can be found in tests/test.py.
 These tests helped make sure that the functions would work and return the correct errors if given wrong input.
 
-In order to execute the functions, valid environment variables must be defined in the runtime environment.
+In order to execute the functions, a valid MONGO_URI environment variable must be defined in the terminal. 
+When this is done, use the command:
+> 'python3 -m unittest tests/test.py'
 
 ### Testing different devices and browsers
 
