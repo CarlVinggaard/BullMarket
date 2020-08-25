@@ -21,12 +21,19 @@
         {% for stock in data %}
           <tr height="50px">
             <td class="text-left md:text-lg px-4 font-bold text-gray-600"><div><a href="{{ '/stocks/%s'%stock }}">{{ stock }}</a></div></td>
-            <td class=""><a href="{{ '/stocks/%s#comments'%stock }}" title="Join the conversation" class="flex"><p class="text-xs mr-2">{{ comments[stock] }}</p><img src="https://img.icons8.com/windows/chat.png" class="h-5 w-5" /></a></td>
+            <td class="">
+              <a href="{{ '/stocks/%s#comments'%stock }}" title="Join the conversation" class="flex">
+                <p class="text-xs mr-2">{{ comments[stock] }}</p>
+                <img src="https://img.icons8.com/windows/chat.png" class="h-5 w-5" alt="Join the conversation" />
+              </a>
+            </td>
             <td class="text-right text-sm md:text-base px-4">${{ data[stock]|round(2) }}</td>
             <td class="">
               <div class="flex md:pl-6">
-                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center text-sm md:text-base uppercase font-bold w-12 md:w-20 bg-orange-500 py-1 md:py-2 rounded mr-2">Buy</a>
-                <a href="{{ '/sell/%s'%stock }}" class="text-white text-center text-sm md:text-base uppercase font-bold w-12 md:w-20 bg-blue-500 py-1 md:py-2 rounded">Sell</a>
+                <a href="{{ '/buy/%s'%stock }}" class="text-white text-center text-sm md:text-base uppercase font-bold w-12 md:w-20 bg-orange-500
+                  py-1 md:py-2 rounded mr-2">Buy</a>
+                <a href="{{ '/sell/%s'%stock }}" class="text-white text-center text-sm md:text-base uppercase font-bold w-12 md:w-20 bg-blue-500
+                  py-1 md:py-2 rounded">Sell</a>
               </div>
             </td>
           </tr>
